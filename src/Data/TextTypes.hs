@@ -1,8 +1,6 @@
-module Data.TextTypes
-    ( Point, Text, MotionAction
-    ) where
+module Data.TextTypes where
 
-newtype Point = Point {col :: Int} deriving (Eq)
+data Point = Point {col :: Int} deriving (Eq, Show)
 
 type Text = String
 

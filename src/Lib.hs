@@ -1,7 +1,11 @@
 module Lib
     ( someFunc,
     findMotions,
-    aStar
+    aStar,
+    astar,
+    isGoal10,
+    lenToGoal,
+    generateNextN
     ) where
 
 import Data.TextTypes
@@ -33,15 +37,29 @@ aStar :: Point -- ^ Initial point
       -> [MotionAction] -- ^ Route to navigate to goal
 aStar _ _ _ _ _ _ = []
 
-astar :: (Point -> Bool) -- Is point a goal
-       -> [Point] -- Next to check
+astar' :: (Point -> Bool) -- Is point a goal
+       -> (Point -> Int) -- heuristic function
+       -> [(Point, Int)] -- Next to check
        -> [Point] -- Visited
-       -> (Point -> [Point]) -- neighbours generator
+       -> ((Point, Int) -> [(Point, Int)]) -- neighbours generator
        -> Maybe [Point] -- ^ Route to navigate to goal
-astar _ [] _ _ = Nothing
-astar isGoal (p:xs) seen getNext
+astar' _ _ [] _ _ = Nothing
+astar' isGoal h next seen getNext
     | isGoal p = Just [p]
-    | p `elem` seen = astar isGoal xs seen getNext
-    | otherwise = astar isGoal xs' (p:seen) getNext
+    | p `elem` seen = astar' isGoal h nextTail seen getNext
+    | otherwise = fmap (p :) (astar' isGoal h next' (p:seen) getNext)
     where
-        xs' = xs <> getNext p
+        nextPoint' [x] = x
+        nextPoint' list = foldr1 minPair list
+        nextPoint = nextPoint' next
+        p = fst nextPoint
+        nextTail = removeItem nextPoint next
+        minPair (x1,y1) (x2,y2) = if (h x1 + y1)<(h x2 + y2) then (x1,y1) else (x2,y2)
+        next' = nextTail <> getNext nextPoint
+        removeItem _ []                 = []
+        removeItem x (y:ys) | x == y    = removeItem x ys
+                    | otherwise = y : removeItem x ys
+
+generateNextN (p,f) = [(Point {col=col p-1},f+1),(Point {col=col p+1}, f+1)]
+isGoal10 p = col p == 10
+lenToGoal p = abs $ col p - 10
