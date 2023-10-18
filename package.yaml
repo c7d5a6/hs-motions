@@ -57,3 +57,16 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - hs-motions
+
+benchmarks:
+  hs-motion-bench:
+    dependencies:
+    - criterion
+    - hs-motions
+    ghc-options:
+    - "-O2"
+    - "-rtsopts"
+    - "-threaded"
+    - "-with-rtsopts=-N"
+    main: Bench.hs
+    source-dirs: bench
