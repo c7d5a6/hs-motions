@@ -1,18 +1,25 @@
 import Criterion.Main
-
--- The function we're benchmarking.
-fib m | m < 0     = error "negative!"
-      | otherwise = go m
-  where
-    go 0 = 0
-    go 1 = 1
-    go n = go (n-1) + go (n-2)
+import Lib
 
 -- Our benchmark harness.
-main = defaultMain [
-  bgroup "fib" [ bench "1"  $ whnf fib 1
-               , bench "5"  $ whnf fib 5
-               , bench "9"  $ whnf fib 9
-               , bench "11" $ whnf fib 11
-               ]
-  ]
+main =
+  defaultMain
+    [ bgroup
+        "astar/elem"
+        [ 
+          bench "0" $ whnf astarBench 0,
+          bench "1" $ whnf astarBench 1,
+          bench "10" $ whnf astarBench 10,
+          bench "100" $ whnf astarBench 100,
+          bench "1000" $ whnf astarBench 1000
+        ],
+      bgroup
+        "astar/PQ"
+        [ 
+          bench "0" $ whnf astarBench2 0,
+          bench "1" $ whnf astarBench2 1,
+          bench "10" $ whnf astarBench2 10,
+          bench "100" $ whnf astarBench2 100,
+          bench "1000" $ whnf astarBench2 1000
+        ]
+    ]

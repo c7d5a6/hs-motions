@@ -21,6 +21,7 @@ description:         Please see the README on GitHub at <https://github.com/gith
 
 dependencies:
 - base >= 4.7 && < 5
+- pqueue
 
 ghc-options:
 - -Wall
@@ -66,7 +67,8 @@ benchmarks:
     ghc-options:
     - "-O2"
     - "-rtsopts"
-    - "-threaded"
-    - "-with-rtsopts=-N"
+    - "-fexpose-all-unfoldings"
+    # - "-threaded"
+    # - "-with-rtsopts=-N"
     main: Bench.hs
     source-dirs: bench

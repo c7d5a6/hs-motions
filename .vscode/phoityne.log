@@ -1,0 +1,5 @@
+2023-10-18 15:22:48.629873719000 [3211370(ThreadId 13)] ERROR APP - user error (<getModule> loaded module can not find from path. </home/nkukovenko/projects/hs-motions/src/Lib.hs> [("Main","/home/nkukovenko/projects/hs-motions/test/Spec.hs")])
+2023-10-18 15:23:38.919914955000 [3211900(ThreadId 13)] ERROR APP - user error (<getModule> loaded module can not find from path. </home/nkukovenko/projects/hs-motions/src/Lib.hs> [("Main","/home/nkukovenko/projects/hs-motions/test/Spec.hs")])
+2023-10-18 15:30:01.222242333000 [3216751(ThreadId 13)] ERROR APP - user error (<getModule> loaded module can not find from path. </home/nkukovenko/projects/hs-motions/src/Lib.hs> [("Main","/home/nkukovenko/projects/hs-motions/test/Spec.hs")])
+2023-10-18 15:31:28.059625031000 [3217525(ThreadId 13)] ERROR APP - user error (<getModule> loaded module can not find from path. </home/nkukovenko/projects/hs-motions/src/Lib.hs> [("Main","/home/nkukovenko/projects/hs-motions/test/Spec.hs")])
+2023-10-18 15:31:28.073748975000 [3217525(ThreadId 13)] ERROR APP - start debugging failed. user error (ExecResult not found.) : Left "user error (ExecResult not found.)"
