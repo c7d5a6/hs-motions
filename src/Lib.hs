@@ -74,11 +74,14 @@ astar' isGoal h next seen getNext
   | p `elem` seen = astar' isGoal h next' seen getNext
   | otherwise = fmap (p :) (astar' isGoal h next' (p : seen) getNext)
   where
-    nextPoint = PQ.findMin next
-    nextwithout = PQ.deleteMin next    
+    (nextPoint,nextwithout) = PQ.deleteFindMin next
     p = snd nextPoint
-    neighbours = getNext (snd nextPoint, fst nextPoint)
-    next' = foldl' (\q (pn,f) -> PQ.insert (f-h p + h pn) pn q) nextwithout (filter (\(pn,f)->pn `notElem` seen) neighbours)
+    neighbours = filter (\(pn,f)->pn `notElem` seen) $ getNext (snd nextPoint, fst nextPoint)
+    filterN' i pn = fmap ((>) i) (lookup pn neighbours)
+    filterN  i pn = maybe True id (filterN' i pn)
+    nextwithout' = PQ.filterWithKey filterN nextwithout
+    next'' = PQ.fromList (map (\(pn,f)->(f-h p + h pn,pn)) neighbours)
+    next' = PQ.union nextwithout' next''
 
 astar'' ::
   (Point -> Bool) -> -- Is point a goal
@@ -100,8 +103,7 @@ astar'' isGoal h next seen getNext
     filterN' i pn = fmap ((>) i) (lookup pn neighbours)
     filterN  i pn = maybe True id (filterN' i pn)
     nextwithout' = PQ.filterWithKey filterN nextwithout
-    -- next'' = PQ.fromList (map swap neighbours)
-    next'' = foldl' (\q (pn,f) -> PQ.insert (f-h p + h pn) pn q) PQ.empty neighbours
+    next'' = PQ.fromList (map (\(pn,f)->(f-h p + h pn,pn)) neighbours)
     next' = PQ.union nextwithout' next''
     
 
